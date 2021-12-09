@@ -1,5 +1,5 @@
-#server:
-#  PORT: 8080
+server:
+  PORT: 8080
 
 #influxClient:
 #  INFLUX_URL: http://localhost:8086
@@ -22,8 +22,8 @@
 #  LOGSTASH_PORT: 31354
 #  LOGSTASH_PROTOCOL: tcp
 
-#sqlite:
-#  DB_DATABASE: test.db.sqlite3
+sqlite:
+  DB_DATABASE: test.db.sqlite3
 
 #subservice:
 #  URL: http://localhost

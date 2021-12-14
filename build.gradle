@@ -46,6 +46,7 @@ dependencies {
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.1'
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.0'
 }
 
 dependencyManagement {

@@ -2,6 +2,12 @@ spring:
   application:
     name: spring-cloud-setup
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
+
 server:
   PORT: 8080
 

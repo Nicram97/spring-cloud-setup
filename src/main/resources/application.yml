@@ -6,7 +6,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: info, prometheus
+        include: info, prometheus, metrics
 
 server:
   PORT: 8080

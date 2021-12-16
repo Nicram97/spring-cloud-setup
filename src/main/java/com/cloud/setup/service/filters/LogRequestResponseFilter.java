@@ -1,5 +1,8 @@
 package com.cloud.setup.service.filters;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Summary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,8 +19,20 @@ import java.io.UnsupportedEncodingException;
 @Component
 @Slf4j
 public class LogRequestResponseFilter extends OncePerRequestFilter {
+    private final Summary responseTimeInMs;
+
     private boolean includeResponsePayload = true;
     private int maxPayloadLength = 1000;
+
+    LogRequestResponseFilter(CollectorRegistry meterRegistry) {
+        this.responseTimeInMs = Summary
+                .build()
+                .quantile(0.5, 0.05)
+                .name("http_response_time_milliseconds_avg")
+                .labelNames("method", "uri", "status")
+                .help("Request average completion time in milliseconds")
+                .register(meterRegistry);
+    }
 
     private String getContentAsString(byte[] buf, int maxLength, String charsetName) {
         if (buf == null || buf.length == 0) return "";
@@ -39,7 +54,6 @@ public class LogRequestResponseFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         long startTime = System.currentTimeMillis();
         StringBuffer reqInfo = new StringBuffer()
                 .append("[")
@@ -73,7 +87,12 @@ public class LogRequestResponseFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(wrappedRequest, wrappedResponse);     // ======== This performs the actual request!
         long duration = System.currentTimeMillis() - startTime;
-
+        // set request latency median with 5% tolerance error
+        this.responseTimeInMs.labels(
+                wrappedRequest.getMethod(),
+                wrappedRequest.getRequestURI(),
+                Integer.toString(wrappedResponse.getStatus())
+        ).observe(duration);
         // log the request's body AFTER the request has been made and ContentCachingRequestWrapper did its work.
         String requestBody = this.getContentAsString(wrappedRequest.getContentAsByteArray(), this.maxPayloadLength, request.getCharacterEncoding());
         if (requestBody.length() > 0) {

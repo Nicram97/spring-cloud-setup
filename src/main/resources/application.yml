@@ -7,18 +7,34 @@ management:
     web:
       exposure:
         include: info, prometheus, metrics
+  metrics:
+    export:
+      influx:
+        db: db0
+        uri: http://localhost:8086
+        user-name: admin
+        password: adminpassword
+        step: 10s
+        bucket: default
+        token: GLfxENWXCTvQRknxpO9UTHu6KCxcrJBFb1e9eKWk6OOBqSpWjIlGuwmmVWq4wirMNa6CaWlwVEL4AJ6Nmr6qDw==
+        org: default
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
 
 server:
   PORT: 8080
 
 #influxClient:
 #  INFLUX_URL: http://localhost:8086
-#  INFLUX_DATABASE: defaultdb
+#  INFLUX_DATABASE: db0
 #  INFLUX_RETENTION_POLICY: autogen
 #  INFLUX_ORGANIZATION: default
 #  INFLUX_SEND_INTERVAL_MS: 10000
-#  INFLUX_ACCESS_TOKEN: QkVtUb_mYxvP29F0l6DTt8jnJrchns88O_a1AXJSi72zPOcRpVwIySXmBOcCBqdo1utcT2feC34EsTMPgs4SHw
-#  INFLUX_BUCKET_ID: 9082a1478e9e781c
+#  INFLUX_ACCESS_TOKEN: GLfxENWXCTvQRknxpO9UTHu6KCxcrJBFb1e9eKWk6OOBqSpWjIlGuwmmVWq4wirMNa6CaWlwVEL4AJ6Nmr6qDw==
+#  INFLUX_BUCKET_ID: 8218b27d35b1d82d
 
 #database:
 #  DB_HOST: localhost

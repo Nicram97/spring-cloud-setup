@@ -53,6 +53,7 @@ dependencies {
     implementation group: 'pl.project13.maven', name: 'git-commit-id-plugin', version: '4.9.10'
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.8.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.6.1'
+    implementation group: 'io.micrometer', name: 'micrometer-registry-influx', version: '1.8.1'
 }
 
 dependencyManagement {

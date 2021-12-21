@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-public class LogstashConfig {
+public class Config {
     private static final String LOGSTASH_APPENDER_NAME = "LOGSTASH";
     private final AppProperties appProperties;
 
-    LogstashConfig(AppProperties appProperties) {
+    Config(AppProperties appProperties) {
         this.appProperties = appProperties;
     }
 

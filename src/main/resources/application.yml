@@ -1,28 +1,31 @@
 spring:
   application:
     name: spring-cloud-setup
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 management:
   endpoints:
     web:
       exposure:
         include: info, prometheus, metrics
-  metrics:
-    export:
-      influx:
-        db: db0
-        uri: http://localhost:8086
-        user-name: admin
-        password: adminpassword
-        step: 10s
-        bucket: default
-        token: GLfxENWXCTvQRknxpO9UTHu6KCxcrJBFb1e9eKWk6OOBqSpWjIlGuwmmVWq4wirMNa6CaWlwVEL4AJ6Nmr6qDw==
-        org: default
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
+#  metrics:
+#    export:
+#      influx:
+#        db: db0
+#        uri: http://localhost:8086
+#        user-name: admin
+#        password: adminpassword
+#        step: 10s
+#        bucket: default
+#        token: GLfxENWXCTvQRknxpO9UTHu6KCxcrJBFb1e9eKWk6OOBqSpWjIlGuwmmVWq4wirMNa6CaWlwVEL4AJ6Nmr6qDw==
+#        org: default
+#    web:
+#      server:
+#        request:
+#          autotime:
+#            enabled: true
 
 server:
   PORT: 8080

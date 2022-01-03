@@ -4,7 +4,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+    converters:
+      preferred-json-mapper: gson
 management:
   endpoints:
     web:
@@ -54,6 +55,6 @@ server:
 sqlite:
   DB_DATABASE: test.db.sqlite3
 
-#subservice:
-#  URL: http://localhost
-#  PORT: 3001
+subservice:
+  URL: http://localhost
+  PORT: 3001

@@ -1,9 +1,8 @@
 package com.cloud.setup.service.controllers;
 
 import com.cloud.setup.service.properties.AppProperties;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +12,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -27,14 +27,23 @@ public class CarsController {
     }
 
     @GetMapping("/cars")
-    public JsonElement getRandomCar() throws IOException, InterruptedException {
+    public Object getRandomCar() throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(String.format("%s:%s",this.appProperties.getSubservice().getUrl(), this.appProperties.getSubservice().getPort().toString())))
                 .GET()
                 .build();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        JsonArray jsonArray = (JsonArray) JsonParser.parseString(response.body());
-        int randomValue = ThreadLocalRandom.current().nextInt(0, jsonArray.size() + 1);
-        return jsonArray.get(randomValue);
+        List<Object> jsonList = jsonStringToObjectArray(response.body());
+        int randomValue = ThreadLocalRandom.current().nextInt(0, jsonList.size() + 1);
+        return jsonList.get(randomValue);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static <T> T jsonStringToObjectArray(String content) throws IOException {
+        T obj = null;
+        ObjectMapper mapper = new ObjectMapper();
+        obj = (T) mapper.readValue(content, new TypeReference<List>() {
+        });
+        return obj;
     }
 }

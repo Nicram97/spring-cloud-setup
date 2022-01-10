@@ -4,6 +4,7 @@
 </p>
 
 <h3>How-To</h3>
+
 <h4>Run the app</h4>
 <p>
 To run the app with most basic functionalities You just need to run the app and eventually set proper variables in application.yml in resources folder considering subservice (<b>Spring-cloud-subservice</b>)
